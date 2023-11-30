@@ -37,7 +37,8 @@ fn main() {
         21 => Box::new(Day21),
         22 => Box::new(Day22),
         23 => Box::new(Day23),
-        24 => Box::new(Day23),
+        24 => Box::new(Day24),
+        24 => Box::new(Day25),
         _ => panic!("Not acceptable day argument"),
     };
 
