@@ -25,6 +25,7 @@ mod day6;
 mod day7;
 mod day8;
 mod day9;
+pub mod main_utils;
 
 pub use day1::Day1;
 pub use day10::Day10;
@@ -43,7 +44,7 @@ pub use day21::Day21;
 pub use day22::Day22;
 pub use day23::Day23;
 pub use day24::Day24;
-pub use day24::Day25;
+pub use day25::Day25;
 pub use day3::Day3;
 pub use day4::Day4;
 pub use day5::Day5;
