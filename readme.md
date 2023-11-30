@@ -14,6 +14,8 @@ cd path_to_this_repo
 - The initialization executable creates 24 .rs files inside [advent](./advent) folder one for each day.
 - It also creates 24 text folders inside [inputs](./inputs/) folder
 
+**Important** do not run the init binaries after you have made changes to the day*.rs files,  the binary will overwrite the files.
+
 ## Usage
 
 - Implement `Task` trait which has 2 functions `task_part_one` and `task_part_two`.
