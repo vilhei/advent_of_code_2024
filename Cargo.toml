@@ -27,3 +27,4 @@ harness = false
 
 [dependencies]
 criterion = "0.5.1"
+util_procs = { git = "https://github.com/vilhei/util_procs" }

@@ -7,6 +7,7 @@ name = "advent_of_code_template"
 version = "0.1.0"
 dependencies = [
  "criterion",
+ "util_procs",
 ]
 
 [[package]]
@@ -484,6 +485,15 @@ name = "unicode-ident"
 version = "1.0.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b"
+
+[[package]]
+name = "util_procs"
+version = "0.1.0"
+source = "git+https://github.com/vilhei/util_procs#f5926b09064f8424bbd6d97a1ed3705ce6c031b7"
+dependencies = [
+ "quote",
+ "syn",
+]
 
 [[package]]
 name = "walkdir"
