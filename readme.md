@@ -1,5 +1,12 @@
 # Advent of code rust template
 
+## TODO
+- Change Criterion benchmark settings to use 2023 settings
+- Change input to the tasks to be file string instead of the file path --> read the file in main. This means that benchmarking does not include file read
+- Change binary name in Cargo.toml file to reflect correct year or remove year all together
+- Add common parsin functions etc. to utils.rs
+- Todo show run time for each task in main?
+
 ## Installation
 - Create repository using this as template
 - Open terminal inside repository root

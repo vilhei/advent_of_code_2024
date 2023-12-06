@@ -7,10 +7,12 @@ edition = "2021"
 [lib]
 name = "advents"
 path = "advent/advents.rs"
+bench = false
 
 [[bin]]
 name = "advent_of_code_2022"
 path = "src/main.rs"
+bench = false
 
 [[test]]
 name = "advent_test"
