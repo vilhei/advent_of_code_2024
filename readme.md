@@ -1,8 +1,8 @@
 # Advent of code rust template
 
 ## TODO
-- Change Criterion benchmark settings to use 2023 settings
-- Change input to the tasks to be file string instead of the file path --> read the file in main. This means that benchmarking does not include file read
+- Change Criterion benchmark settings to use 2023 settings **DONE**
+- Change input to the tasks to be file string instead of the file path --> read the file in main. This means that benchmarking does not include file read **DONE**
 - Change binary name in Cargo.toml file to reflect correct year or remove year all together
 - Add common parsin functions etc. to utils.rs
 - Todo show run time for each task in main?
@@ -28,8 +28,31 @@ cd path_to_this_repo
 - Implement `Task` trait which has 2 functions `task_part_one` and `task_part_two`.
 - Build and run the cargo project with following command giving the day as argument to the built binary.
 
+### Running tasks
+
 ```bash
 cargo run -- <day>
 ```
-
 If `Task` for given day has been implemented the results are printed out on the console. 
+
+### Running benchmarks
+
+Run all benches
+```bash
+cargo bench -- --verbose
+```
+
+Run single day both parts
+```bash
+cargo bench -- day_<day> --verbose
+cargo bench -- day_4 --verbose #example
+```
+
+Rune part n for single day
+```bash
+ cargo bench -- day_<day>__part<n> --verbose
+ cargo bench -- day_4__part2 --verbose
+```
+
+
+
