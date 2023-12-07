@@ -14,10 +14,14 @@ pub fn read_task_input_file(path: &str) -> Result<String, TaskError> {
 }
 
 pub trait Task {
-    fn task_part_one(&self, _input_file: &str) -> Result<String, TaskError> {
+    #[allow(unused_variables)]
+    fn task_part_one(&self, file_content: &str) -> Result<String, TaskError> {
         Err(TaskError::NotImplemented(1))
     }
-    fn task_part_two(&self, _input_file: &str) -> Result<String, TaskError> {
+    #[allow(unused_variables)]
+    fn task_part_two(&self, file_content: &str) -> Result<String, TaskError> {
         Err(TaskError::NotImplemented(2))
     }
+
+    fn get_day(&self) -> u32;
 }

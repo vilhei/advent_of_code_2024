@@ -54,3 +54,45 @@ pub use day22::Day22;
 pub use day23::Day23;
 pub use day24::Day24;
 pub use day25::Day25;
+
+use main_utils::Part;
+use util_procs::print_exec_time;
+use utils::{Task, TaskError};
+
+pub struct Advent<'a> {
+    input: &'a str,
+    solver: Box<dyn Task>,
+}
+
+impl<'a> Advent<'a> {
+    pub fn new(input: &'a str, solver: Box<dyn Task>) -> Self {
+        Advent { input, solver }
+    }
+
+    #[print_exec_time(Part 1 time : )]
+    pub fn process_part1(&self) {
+        let res = self.solver.task_part_one(self.input);
+        self.handle_answer(&res, Part::One);
+    }
+
+    #[print_exec_time(Part 2 time : )]
+    pub fn process_part2(&self) {
+        let res = self.solver.task_part_two(self.input);
+        self.handle_answer(&res, Part::Two);
+    }
+
+    fn get_day(&self) -> u32 {
+        self.solver.get_day()
+    }
+
+    fn handle_answer(&self, res: &Result<String, TaskError>, task_n: Part) {
+        if let Ok(answer) = res {
+            println!("Day {} part {task_n} answer :\n{answer}", self.get_day());
+            return;
+        }
+        match res.as_ref().unwrap_err() {
+            TaskError::InvalidFilePath(reason) => panic!("Invalid file path :\n {reason}"),
+            TaskError::NotImplemented(task_n) => panic!("Task {task_n} not implemented"),
+        }
+    }
+}
