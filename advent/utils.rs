@@ -1,3 +1,4 @@
+use std::cmp::PartialEq;
 use std::fs;
 use std::ops::Index;
 use std::ops::IndexMut;
@@ -49,9 +50,12 @@ impl From<&str> for Matrix<char> {
     }
 }
 
-impl<T> Matrix<T> {
-    pub fn data(&mut self) -> &mut Vec<Vec<T>> {
+impl<T: PartialEq> Matrix<T> {
+    pub fn data_mut(&mut self) -> &mut Vec<Vec<T>> {
         &mut self.data
+    }
+    pub fn data(&self) -> &Vec<Vec<T>> {
+        &self.data
     }
 
     pub fn transform_type<U, F>(self, mut f: F) -> Matrix<U>
@@ -90,6 +94,23 @@ impl<T> Matrix<T> {
     }
     pub fn row_len(&self) -> usize {
         self.rows
+    }
+
+    pub fn find(&self, target: &T) -> Option<(usize, usize)> {
+        for (i, row) in self.data.iter().enumerate() {
+            if let Some(j) = row.iter().position(|e| e == target) {
+                return Some((i, j));
+            }
+        }
+        None
+    }
+    pub fn find_any(&self, target: &[T]) -> Option<(usize, usize)> {
+        for (i, row) in self.data.iter().enumerate() {
+            if let Some(j) = row.iter().position(|e| target.contains(e)) {
+                return Some((i, j));
+            }
+        }
+        None
     }
 }
 

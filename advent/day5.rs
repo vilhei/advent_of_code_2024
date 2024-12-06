@@ -61,7 +61,7 @@ impl Task for Day5 {
             let mut update: Vec<usize> = line.split(',').map(|s| s.parse().unwrap()).collect();
 
             for (idx, num) in update.iter().enumerate() {
-                if let Some(rules) = page_rules.get(&num) {
+                if let Some(rules) = page_rules.get(num) {
                     for n in &update[idx + 1..] {
                         if rules.contains(n) {
                             sum += correct_update(&mut update, &page_rules);
