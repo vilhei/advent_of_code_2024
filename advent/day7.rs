@@ -58,13 +58,21 @@ fn process_input(file_content: &str, is_part_2: bool) -> usize {
                     .collect()
             };
 
-            for oper_perm in perms {
+            'outer: for oper_perm in perms {
                 let mut total = nums[0];
                 for (oper, num) in oper_perm.iter().zip(&nums[1..]) {
                     match oper {
                         Operation::Add => total += num,
                         Operation::Multiply => total *= num,
-                        Operation::Concetenate => total = format!("{total}{num}").parse().unwrap(),
+                        Operation::Concetenate => {
+                            let factor = num.checked_ilog10().unwrap_or(0) + 1;
+                            // dbg!(total, factor, num);
+                            total = total * 10usize.pow(factor) + num;
+                            // dbg!(total);
+                        }
+                    }
+                    if total > answer {
+                        continue 'outer;
                     }
                 }
                 if total == answer {
