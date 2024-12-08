@@ -1,7 +1,14 @@
 use std::cmp::PartialEq;
 use std::fs;
+use std::fs::File;
+use std::io::BufWriter;
+use std::io::Write;
+use std::ops::Add;
 use std::ops::Index;
 use std::ops::IndexMut;
+use std::ops::Mul;
+use std::ops::Sub;
+use std::path::Path;
 
 #[derive(Debug)]
 pub enum TaskError {
@@ -114,6 +121,18 @@ impl<T: PartialEq> Matrix<T> {
     }
 }
 
+impl Matrix<char> {
+    pub fn write_to_file<F: AsRef<Path>>(&self, path: F) {
+        let file = File::create(path.as_ref()).unwrap();
+        let mut writer = BufWriter::new(file);
+        for row in &self.data {
+            let r: String = row.iter().collect();
+            writeln!(&mut writer, "{}", r).unwrap();
+        }
+        writer.flush().unwrap();
+    }
+}
+
 impl<T> Index<usize> for Matrix<T> {
     type Output = [T];
 
@@ -127,7 +146,161 @@ impl<T> IndexMut<usize> for Matrix<T> {
         &mut self.data[index]
     }
 }
+impl<T> Index<Coords> for Matrix<T> {
+    type Output = T;
+
+    // TODO check that coords are positive
+    fn index(&self, index: Coords) -> &Self::Output {
+        &self.data[index.x as usize][index.y as usize]
+    }
+}
+
+impl<T> IndexMut<Coords> for Matrix<T> {
+    // TODO check that coords are positive
+    fn index_mut(&mut self, index: Coords) -> &mut Self::Output {
+        &mut self.data[index.x as usize][index.y as usize]
+    }
+}
+impl<T> Index<&Coords> for Matrix<T> {
+    type Output = T;
+
+    // TODO check that coords are positive
+    fn index(&self, index: &Coords) -> &Self::Output {
+        &self.data[index.x as usize][index.y as usize]
+    }
+}
+
+impl<T> IndexMut<&Coords> for Matrix<T> {
+    // TODO check that coords are positive
+    fn index_mut(&mut self, index: &Coords) -> &mut Self::Output {
+        &mut self.data[index.x as usize][index.y as usize]
+    }
+}
 
 pub fn parse_2d_char_array(input: &str) -> Matrix<char> {
     Matrix::from(input)
+}
+
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
+pub struct Coords {
+    pub x: isize,
+    pub y: isize,
+}
+impl Sub for Coords {
+    type Output = Self;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+        Self {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+        }
+    }
+}
+
+impl Sub for &Coords {
+    type Output = Coords;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+        Coords {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+        }
+    }
+}
+
+impl Sub<Coords> for &Coords {
+    type Output = Coords;
+
+    fn sub(self, rhs: Coords) -> Self::Output {
+        Coords {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+        }
+    }
+}
+
+impl Add for Coords {
+    type Output = Self;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        Self {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        }
+    }
+}
+
+impl Add<&Coords> for &Coords {
+    type Output = Coords;
+
+    fn add(self, rhs: &Coords) -> Self::Output {
+        Coords {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        }
+    }
+}
+
+impl Add<&Coords> for Coords {
+    type Output = Coords;
+
+    fn add(self, rhs: &Coords) -> Self::Output {
+        Coords {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        }
+    }
+}
+impl Add<Coords> for &Coords {
+    type Output = Coords;
+
+    fn add(self, rhs: Coords) -> Self::Output {
+        Coords {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        }
+    }
+}
+
+impl<T: num_traits::AsPrimitive<isize>> Mul<T> for Coords {
+    type Output = Coords;
+
+    fn mul(self, rhs: T) -> Self::Output {
+        Self {
+            x: self.x * rhs.as_(),
+            y: self.y * rhs.as_(),
+        }
+    }
+}
+impl<T: num_traits::AsPrimitive<isize>> Mul<T> for &Coords {
+    type Output = Coords;
+
+    fn mul(self, rhs: T) -> Coords {
+        Coords {
+            x: self.x * rhs.as_(),
+            y: self.y * rhs.as_(),
+        }
+    }
+}
+
+impl Coords {
+    pub fn new<T>(a: T, b: T) -> Self
+    where
+        T: num_traits::AsPrimitive<isize>,
+    {
+        Self {
+            x: a.as_(),
+            y: b.as_(),
+        }
+    }
+    pub fn inbounds(&self, matrix: &Matrix) -> bool {
+        if self.x >= 0
+            && (self.x as usize) < matrix.rows
+            && self.y >= 0
+            && (self.y as usize) < matrix.columns
+        {
+            return true;
+        }
+        false
+    }
 }

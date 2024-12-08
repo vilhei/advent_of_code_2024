@@ -1,4 +1,3 @@
-use core::panic;
 use std::iter::repeat_n;
 
 use crate::utils::{Task, TaskError};
